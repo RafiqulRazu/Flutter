@@ -9,7 +9,7 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  final TextEditingController name = TextEditingController();
+  final TextEditingController userName = TextEditingController();
 
   final TextEditingController email = TextEditingController();
 
@@ -21,16 +21,13 @@ class _RegistrationState extends State<Registration> {
 
   final TextEditingController address = TextEditingController();
 
-  final DateTimeFieldPickerPlatform dob = DateTimeFieldPickerPlatform.material;
-
-  String? selectedGender;
 
   final _formKey = GlobalKey<FormState>();
 
   // Method to validate form and check passwords
   void _register() {
     if (_formKey.currentState!.validate()) {
-      String uName = name.text;
+      String uName = userName.text;
       String uEmail = email.text;
       String uPassword = password.text;
 
@@ -47,154 +44,93 @@ class _RegistrationState extends State<Registration> {
             padding: EdgeInsets.all(20),
             child: SingleChildScrollView(
                 child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: name,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: email,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: password,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.password),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: confirmPassword,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.password),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: cell,
-                    decoration: InputDecoration(
-                        labelText: 'Cell Number',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.phone)),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: address,
-                    decoration: InputDecoration(
-                        labelText: 'Adress',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.home)),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  DateTimeFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Date of Birth'),
-                    mode: DateTimeFieldPickerMode.date,
-                    pickerPlatform: dob,
-                    onChanged: (DateTime? value) {
-                      print(value);
-                    },
-                  ),
-                  Row(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Gender:'),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio<String>(
-                              value: 'Male',
-                              groupValue: selectedGender,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            Text('Male'),
-                          ],
+                      TextField(
+                        controller: userName,
+                        decoration: InputDecoration(
+                          labelText: 'Name',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.person),
                         ),
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio<String>(
-                              value: 'Female',
-                              groupValue: selectedGender,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            Text('Female'),
-                          ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: email,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.email),
                         ),
                       ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Radio<String>(
-                              value: 'Other',
-                              groupValue: selectedGender,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            Text('Other'),
-                          ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: password,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.password),
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: confirmPassword,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Confirm Password',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.password),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: cell,
+                        decoration: InputDecoration(
+                            labelText: 'Cell Number',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.phone)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: address,
+                        decoration: InputDecoration(
+                            labelText: 'Adress',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.home)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      ElevatedButton(
+                          onPressed: () {
+                            _register();
+                          },
+                          child: Text(
+                            "Registration",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: GoogleFonts.lato().fontFamily),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white,
+                          )),
                     ],
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        _register();
-                      },
-                      child: Text(
-                        "Registration",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontFamily: GoogleFonts.lato().fontFamily),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
-                      )),
-                ],
-              ),
-            ))));
+                ))));
   }
 }
