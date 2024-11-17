@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/AddProductPage.dart';
+import 'package:test_flutter/page/AdminPage.dart';
+import 'package:test_flutter/page/ViewCustomerPage.dart';
+import 'package:test_flutter/page/ViewProductPage.dart';
 import 'package:test_flutter/page/login.dart';
 import 'package:test_flutter/page/registration.dart';
 
@@ -14,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Registration(),
+      home: ViewCustomerPage(),
     );
   }
 }
