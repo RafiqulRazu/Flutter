@@ -20,18 +20,13 @@ public class Lead {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "activity_id", referencedColumnName = "id")
-    private Activity activity;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "executive_id", referencedColumnName = "id")
-    private User salesExecutive;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     private String status;
 
     private LocalDate createdAt;
 
     private LocalDate updatedAt;
-
 
 }

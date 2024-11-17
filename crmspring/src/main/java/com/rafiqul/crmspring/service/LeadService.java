@@ -2,9 +2,11 @@ package com.rafiqul.crmspring.service;
 
 
 import com.rafiqul.crmspring.entity.Activity;
+import com.rafiqul.crmspring.entity.Customer;
 import com.rafiqul.crmspring.entity.Lead;
 import com.rafiqul.crmspring.entity.User;
 import com.rafiqul.crmspring.repository.ActivityRepository;
+import com.rafiqul.crmspring.repository.CustomerRepository;
 import com.rafiqul.crmspring.repository.LeadRepository;
 import com.rafiqul.crmspring.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -22,10 +24,7 @@ public class LeadService {
     private LeadRepository leadRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ActivityRepository activityRepository;
+    private CustomerRepository customerRepository;
 
 
     @Transactional
@@ -33,32 +32,22 @@ public class LeadService {
         // Set default values for new lead
         lead.setCreatedAt(LocalDate.now());
         lead.setUpdatedAt(LocalDate.now());
-        lead.setStatus("New"); // Default status for new leads
 
-        // Validate and set sales executive if provided
-        if (lead.getSalesExecutive() != null) {
-            User existingSalesExecutive = userRepository.findById(lead.getSalesExecutive().getId())
-                    .orElseThrow(() -> new RuntimeException("Sales Executive not found"));
-            lead.setSalesExecutive(existingSalesExecutive);
+        // Validate and associate Customer if provided
+        if (lead.getCustomer() != null) {
+            Customer existingCustomer = customerRepository.findById(lead.getCustomer().getId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+            lead.setCustomer(existingCustomer);
         }
 
-        // Validate and set activity if provided
-        if (lead.getActivity() != null) {
-            Activity existingActivity = activityRepository.findById(lead.getActivity().getId())
-                    .orElseThrow(() -> new RuntimeException("Activity not found"));
-            lead.setActivity(existingActivity);
-        }
-
+        // Save the lead
         return leadRepository.save(lead);
     }
 
-
-    // Retrieve a lead by ID
     public Optional<Lead> getLeadById(Long id) {
         return leadRepository.findById(id);
     }
 
-    // Retrieve all leads
     public List<Lead> getAllLeads() {
         return leadRepository.findAll();
     }
@@ -69,25 +58,19 @@ public class LeadService {
         Lead existingLead = leadRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Lead not found with id: " + id));
 
-        // Update fields
-        if (leadDetails.getSalesExecutive() != null) {
-            User existingSalesExecutive = userRepository.findById(leadDetails.getSalesExecutive().getId())
-                    .orElseThrow(() -> new RuntimeException("Sales Executive not found"));
-            existingLead.setSalesExecutive(existingSalesExecutive);
+        // Update customer association if provided
+        if (leadDetails.getCustomer() != null) {
+            Customer existingCustomer = customerRepository.findById(leadDetails.getCustomer().getId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+            existingLead.setCustomer(existingCustomer);
         }
 
-        if (leadDetails.getActivity() != null) {
-            Activity existingActivity = activityRepository.findById(leadDetails.getActivity().getId())
-                    .orElseThrow(() -> new RuntimeException("Activity not found"));
-            existingLead.setActivity(existingActivity);
-        }
-
-        existingLead.setStatus(leadDetails.getStatus());
+        // Update audit information
         existingLead.setUpdatedAt(LocalDate.now());
 
+        // Save the updated lead
         return leadRepository.save(existingLead);
     }
-
 
     // Delete a lead
     @Transactional
