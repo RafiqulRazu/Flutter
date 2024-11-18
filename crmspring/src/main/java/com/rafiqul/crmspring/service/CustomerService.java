@@ -31,14 +31,15 @@ public class CustomerService {
 
 
     public Customer updateCustomer(Long id, Customer updatedCustomer) {
-        return customerRepository.findById(id).map(customer -> {
-            customer.setName(updatedCustomer.getName());
-            customer.setEmail(updatedCustomer.getEmail());
-            customer.setPhone(updatedCustomer.getPhone());
-            customer.setAddress(updatedCustomer.getAddress());
-            customer.setCompany(updatedCustomer.getCompany());
-            return customerRepository.save(customer);
-        }).orElseThrow(() -> new RuntimeException("Customer not found with id " + id));
+        Customer existingCustomer = customerRepository.findById(id).orElse(null);
+        if (existingCustomer != null) {
+            existingCustomer.setName(updatedCustomer.getName());
+            existingCustomer.setEmail(updatedCustomer.getEmail());
+            existingCustomer.setAddress(updatedCustomer.getAddress());
+            existingCustomer.setPhone(updatedCustomer.getPhone());
+            return customerRepository.save(existingCustomer);
+        }
+        return null;
     }
 
     public void deleteCustomer(Long id) {

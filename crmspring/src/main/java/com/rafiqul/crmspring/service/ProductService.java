@@ -31,20 +31,25 @@ public class ProductService {
 
 
     public Product updateProduct(Long productId, Product updatedProduct) {
-        Product existingProduct = getProductById(productId);
-        existingProduct.setName(updatedProduct.getName());
-        existingProduct.setUnitPrice(updatedProduct.getUnitPrice());
-        existingProduct.setStock(updatedProduct.getStock());
-        existingProduct.setVat(updatedProduct.getVat());
-        existingProduct.setStatus(updatedProduct.getStatus());
-        return productRepository.save(existingProduct);
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setName(updatedProduct.getName());
+            product.setUnitPrice(updatedProduct.getUnitPrice());
+            product.setStock(updatedProduct.getStock());
+            product.setVat(updatedProduct.getVat());
+            product.setStatus(updatedProduct.getStatus());
+            return productRepository.save(product);
+        } else {
+            throw new RuntimeException("Product not found");
+        }
     }
 
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
 
-    // Update product stock (deduct stock when an order is created)
     public void updateStock(Product product, double quantity) {
         double newStock = product.getStock() - quantity;
         if (newStock < 0) {

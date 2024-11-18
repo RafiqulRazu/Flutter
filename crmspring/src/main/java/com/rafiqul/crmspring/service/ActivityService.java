@@ -2,19 +2,22 @@ package com.rafiqul.crmspring.service;
 
 import com.rafiqul.crmspring.entity.Activity;
 import com.rafiqul.crmspring.entity.Customer;
+import com.rafiqul.crmspring.entity.Lead;
 import com.rafiqul.crmspring.entity.User;
 import com.rafiqul.crmspring.repository.ActivityRepository;
 import com.rafiqul.crmspring.repository.CustomerRepository;
+import com.rafiqul.crmspring.repository.LeadRepository;
 import com.rafiqul.crmspring.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class  ActivityService {
+public class ActivityService {
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -24,6 +27,8 @@ public class  ActivityService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private LeadRepository leadRepository;
 
 
     @Transactional
@@ -41,6 +46,14 @@ public class  ActivityService {
         return activityRepository.save(activity);
     }
 
+    public Activity forwardToLeads(Activity activity) {
+        Lead lead = new Lead();
+        lead.setActivity(activity);
+        lead.setCreatedAt(new Date());
+        leadRepository.save(lead);
+        return activity;
+    }
+
 
     public List<Activity> getAllActivities() {
         return activityRepository.findAll();
@@ -53,14 +66,14 @@ public class  ActivityService {
 
 
     public Activity updateActivity(long id, Activity updatedActivity) {
-        return activityRepository.findById(id).map(activity -> {
-            activity.setActivityType(updatedActivity.getActivityType());
-            activity.setDescription(updatedActivity.getDescription());
-            activity.setActivityDate(updatedActivity.getActivityDate());
-            activity.setCustomer(updatedActivity.getCustomer());
-            activity.setAgent(updatedActivity.getAgent());
-            return activityRepository.save(activity);
-        }).orElseThrow(() -> new RuntimeException("Activity not found with id " + id));
+        Activity existingActivity = activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found with id: " + id));
+        existingActivity.setActivityType(updatedActivity.getActivityType());
+        existingActivity.setDescription(updatedActivity.getDescription());
+        existingActivity.setActivityDate(updatedActivity.getActivityDate());
+        existingActivity.setCustomer(updatedActivity.getCustomer());
+        existingActivity.setAgent(updatedActivity.getAgent());
+        return activityRepository.save(existingActivity);
     }
 
 

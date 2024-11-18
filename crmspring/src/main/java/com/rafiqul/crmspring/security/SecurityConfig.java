@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 req.requestMatchers(
                                                 "/login","/register/**", "/activate/**","/api/customer/", "/api/product/","api/product/save" )
                                         .permitAll()
+                                        .requestMatchers("api/**").permitAll()
                                         .requestMatchers("api/product/{id}")
                                         .hasAuthority("ADMIN")
                                         .requestMatchers("api/product/{id}", "api/product/save")

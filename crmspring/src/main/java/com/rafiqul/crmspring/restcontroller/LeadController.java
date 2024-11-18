@@ -19,12 +19,6 @@ public class LeadController {
     @Autowired
     private LeadService leadService;
 
-    // Create a new Lead
-    @PostMapping("/save")
-    public ResponseEntity<Lead> createLead(@RequestBody Lead lead) {
-        Lead createdLead = leadService.createLead(lead);
-        return new ResponseEntity<>(createdLead, HttpStatus.CREATED);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Lead> getLeadById(@PathVariable Long id) {
@@ -40,17 +34,6 @@ public class LeadController {
     public ResponseEntity<List<Lead>> getAllLeads() {
         List<Lead> leads = leadService.getAllLeads();
         return new ResponseEntity<>(leads, HttpStatus.OK);
-    }
-
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Lead> updateLead(@PathVariable Long id, @RequestBody Lead leadDetails) {
-        try {
-            Lead updatedLead = leadService.updateLead(id, leadDetails);
-            return new ResponseEntity<>(updatedLead, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     @DeleteMapping("/delete/{id}")

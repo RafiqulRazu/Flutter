@@ -1,40 +1,52 @@
 package com.rafiqul.crmspring.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data@Table(name = "orders")
+@Getter
+@Setter@Table(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  long id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @ManyToOne
-    @JoinColumn(name = "lead_id", nullable = false)
+    @JoinColumn(name = "lead_id")
     private Lead lead;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "sold_by", nullable = false)
+    private User soldBy;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
     private Date orderDate;
 
-    private double quantity;
+    private double totalAmount;
 
-    private double totalAmount;  // Total amount for the order
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
-    private String status;
-
+    public enum OrderStatus {
+        PENDING,
+        APPROVED,
+        REJECTED,
+        DELIVERED
+    }
 
 }

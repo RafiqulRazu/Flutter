@@ -11,25 +11,26 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@Table(name = "leads")
+@Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Lead {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "activity_id")
-    private Activity activity;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "sales_executive_id")
-    private User salesExecutive;
+    private long id;
 
     @Temporal(TemporalType.DATE)
-    private Date createdAt;
+    private Date deadline;
 
+    private String description;
+
+    private double targetAmount;
+
+    private double salesAmount;
+
+    @OneToOne
+    @JoinColumn(name = "sales_executive_id")
+    private User salesExecutive;
 
 }

@@ -1,5 +1,6 @@
 package com.rafiqul.crmspring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,7 +48,21 @@ public class User implements UserDetails {
 //    @OneToMany(mappedBy = "user")
 //    private List<Token> tokens;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "agent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Activity> activities;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "soldBy", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Order> orders;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "salesExecutive", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Lead> leads;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "salesExecutive", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Task task;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
