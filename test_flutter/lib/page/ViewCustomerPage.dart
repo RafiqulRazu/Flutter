@@ -60,7 +60,6 @@ class _ViewCustomerPageState extends State<ViewCustomerPage> {
             DataColumn(label: Text('Email')),
             DataColumn(label: Text('Phone')),
             DataColumn(label: Text('Address')),
-            DataColumn(label: Text('Company')),
           ],
           rows: _customers.map((customer) {
             return DataRow(cells: [
@@ -68,7 +67,6 @@ class _ViewCustomerPageState extends State<ViewCustomerPage> {
               DataCell(Text(customer.email ?? 'N/A')),
               DataCell(Text(customer.phone ?? 'N/A')),
               DataCell(Text(customer.address ?? 'N/A')),
-              DataCell(Text(customer.company ?? 'N/A')),
             ]);
           }).toList(),
         ),
