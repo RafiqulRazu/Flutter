@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/page/AddProductPage.dart';
 import 'package:test_flutter/page/AdminPage.dart';
+import 'package:test_flutter/page/AgentPage.dart';
+import 'package:test_flutter/page/SalesPage.dart';
 import 'package:test_flutter/page/ViewCustomerPage.dart';
 import 'package:test_flutter/page/ViewProductPage.dart';
 import 'package:test_flutter/page/login.dart';
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: AdminPage(),
+      // home: SalesPage(),
+      // home: AgentPage(),
       home: Login(),
     );
   }

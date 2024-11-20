@@ -90,7 +90,7 @@ class _RegistrationState extends State<Registration> {
         'password': password,
         'phone': phone,
         'address': address,
-        'role': role,
+        // 'role': role,
       }),
     );
     return response;
@@ -172,28 +172,28 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(height: 20),
 
                   // Role Selection
-                  Container(
-                    width: 500,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'ROLE:',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildRadioOption('ADMIN', 'Admin'),
-                            _buildRadioOption('SALES_EXECUTIVE', 'Sales'),
-                            _buildRadioOption('AGENT', 'Agent'),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   width: 500,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         'ROLE:',
+                  //         style: TextStyle(
+                  //             fontSize: 16, fontWeight: FontWeight.w500),
+                  //       ),
+                  //       SizedBox(height: 10),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //         children: [
+                  //           _buildRadioOption('ADMIN', 'Admin'),
+                  //           _buildRadioOption('SALES_EXECUTIVE', 'Sales'),
+                  //           _buildRadioOption('AGENT', 'Agent'),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
 
                   // Register Button with Loading Indicator
@@ -270,22 +270,22 @@ class _RegistrationState extends State<Registration> {
   }
 
   // Helper function to create a radio button with a label
-  Widget _buildRadioOption(String value, String label) {
-    return Expanded(
-      child: Row(
-        children: [
-          Radio<String>(
-            value: value,
-            groupValue: selectedRole,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedRole = newValue;
-              });
-            },
-          ),
-          Text(label),
-        ],
-      ),
-    );
-  }
+  // Widget _buildRadioOption(String value, String label) {
+  //   return Expanded(
+  //     child: Row(
+  //       children: [
+  //         Radio<String>(
+  //           value: value,
+  //           groupValue: selectedRole,
+  //           onChanged: (String? newValue) {
+  //             setState(() {
+  //               selectedRole = newValue;
+  //             });
+  //           },
+  //         ),
+  //         Text(label),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
