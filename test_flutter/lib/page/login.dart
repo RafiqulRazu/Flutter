@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_flutter/page/AdminPage.dart';
+import 'package:test_flutter/page/AgentPage.dart';
 import 'package:test_flutter/page/SalesPage.dart';
 import 'package:test_flutter/page/registration.dart';
 import 'package:test_flutter/service/AuthService.dart';
@@ -33,7 +34,14 @@ class Login extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => SalesPage()),
         );
-      } else {
+      }
+      else if (role == 'AGENT'){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AgentPage()),
+        );
+      }
+      else {
         print('Unknown role: $role');
       }
     } catch (error) {

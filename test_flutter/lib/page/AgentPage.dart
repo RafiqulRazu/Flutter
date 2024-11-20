@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/page/AddCustomerPage.dart';
-import 'package:test_flutter/page/AddProductPage.dart';
-import 'package:test_flutter/page/CreateActivity.dart';
+import 'package:test_flutter/page/customer/AddCustomerPage.dart';
+import 'package:test_flutter/page/product/AddProductPage.dart';
+import 'package:test_flutter/page/activity/CreateActivity.dart';
 import 'package:test_flutter/page/CreateLead.dart';
 import 'package:test_flutter/page/Login.dart';
-import 'package:test_flutter/page/ViewActivity.dart';
-import 'package:test_flutter/page/ViewCustomerPage.dart';
-import 'package:test_flutter/page/ViewProductPage.dart';
+import 'package:test_flutter/page/activity/ViewActivity.dart';
+import 'package:test_flutter/page/customer/ViewCustomerPage.dart';
+import 'package:test_flutter/page/product/ViewProductPage.dart';
 
-class AdminPage extends StatelessWidget {
-  const AdminPage({super.key});
+class AgentPage extends StatelessWidget {
+  const AgentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,50 +46,60 @@ class AdminPage extends StatelessWidget {
                           icon: Icons.people,
                           label: 'Create Customer',
                           color: Colors.deepPurpleAccent,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddCustomerPage()),
-                          ),
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddCustomerPage()),
+                              ),
                         ),
                         _buildDashboardCard(
                           context,
                           icon: Icons.people,
                           label: 'View Customer',
                           color: Colors.deepPurpleAccent,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => ViewCustomerPage()),
-                          ),
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewCustomerPage()),
+                              ),
                         ),
                         _buildDashboardCard(
                           context,
                           icon: Icons.shopping_cart,
                           label: 'Create Activity',
                           color: Colors.deepPurpleAccent,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => CreateActivityPage()),
-                          ),
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CreateActivityPage()),
+                              ),
                         ),
                         _buildDashboardCard(
                           context,
                           icon: Icons.shopping_cart,
                           label: 'View Activity',
                           color: Colors.deepPurpleAccent,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => ViewActivityPage()),
-                          ),
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewActivityPage()),
+                              ),
                         ),
                         _buildDashboardCard(
                           context,
                           icon: Icons.shopping_cart,
                           label: 'Create Lead',
                           color: Colors.deepPurpleAccent,
-                          onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => CreateLeadPage()),
-                          ),
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CreateLeadPage()),
+                              ),
                         ),
                       ],
                     ),
@@ -164,3 +174,5 @@ class AdminPage extends StatelessWidget {
     );
   }
 }
+
+

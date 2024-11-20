@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../model/Customer.dart'; // Adjust the path as necessary
-import '../service/CustomerService.dart';
+import '../../model/Customer.dart'; // Adjust the path as necessary
+import '../../service/CustomerService.dart';
 import 'package:test_flutter/page/AdminPage.dart';
 
 class ViewCustomerPage extends StatefulWidget {

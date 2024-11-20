@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/page/AddProductPage.dart';
+import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/login.dart';
 
 class SalesPage extends StatelessWidget {

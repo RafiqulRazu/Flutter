@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/page/AddProductPage.dart';
+import 'package:test_flutter/page/order/AddOrderPage.dart';
+import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/AdminPage.dart';
 import 'package:test_flutter/page/AgentPage.dart';
 import 'package:test_flutter/page/SalesPage.dart';
-import 'package:test_flutter/page/ViewCustomerPage.dart';
-import 'package:test_flutter/page/ViewProductPage.dart';
+import 'package:test_flutter/page/customer/ViewCustomerPage.dart';
+import 'package:test_flutter/page/product/ViewProductPage.dart';
 import 'package:test_flutter/page/login.dart';
 import 'package:test_flutter/page/registration.dart';
 
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       // home: AdminPage(),
       // home: SalesPage(),
       // home: AgentPage(),
-      home: Login(),
+      // home: Login(),
+      home: AddOrderPage(),
     );
   }
 }

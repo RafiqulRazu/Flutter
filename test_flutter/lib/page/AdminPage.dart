@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/page/AddProductPage.dart';
+import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/Login.dart';
-import 'package:test_flutter/page/ViewCustomerPage.dart';
-import 'package:test_flutter/page/ViewProductPage.dart';
+import 'package:test_flutter/page/customer/ViewCustomerPage.dart';
+import 'package:test_flutter/page/product/ViewProductPage.dart';
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
