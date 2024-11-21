@@ -21,7 +21,6 @@ class _RegistrationState extends State<Registration> {
 
   final TextEditingController address = TextEditingController();
 
-  String? selectedRole;
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -34,14 +33,6 @@ class _RegistrationState extends State<Registration> {
       String uPassword = password.text;
       String uPhone = phone.text;
       String uAddress = address.text;
-      String uRole = selectedRole ?? '';
-
-      if (uRole.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a role')),
-        );
-        return;
-      }
 
       setState(() {
         isLoading = true;
@@ -52,8 +43,7 @@ class _RegistrationState extends State<Registration> {
         uEmail,
         uPassword,
         uPhone,
-        uAddress,
-        uRole,
+        uAddress
       );
 
       setState(() {
@@ -78,7 +68,7 @@ class _RegistrationState extends State<Registration> {
   }
 
   Future<http.Response> _sendDataToBackend(String name, String email,
-      String password, String phone, String address, String role) async {
+      String password, String phone, String address) async {
     // const String url = 'https://8ccf-103-205-69-8.ngrok-free.app/register'; // Android emulator
     const String url = 'http://localhost:8089/register';
     final response = await http.post(
@@ -90,7 +80,6 @@ class _RegistrationState extends State<Registration> {
         'password': password,
         'phone': phone,
         'address': address,
-        // 'role': role,
       }),
     );
     return response;

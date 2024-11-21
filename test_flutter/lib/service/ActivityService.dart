@@ -9,13 +9,13 @@ class ActivityService {
   final Map<String, String> headers = {'Content-Type': 'application/json'};
 
   // Fetch all activities
-  Future<List<ActivityModel>> getAllActivities() async {
+  Future<List<Activity>> getAllActivities() async {
     try {
       final response = await http.get(Uri.parse('$apiUrl/'), headers: headers);
 
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        return data.map((json) => ActivityModel.fromJson(json)).toList();
+        return data.map((json) => Activity.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load activities: ${response.statusCode}');
       }
@@ -25,7 +25,7 @@ class ActivityService {
   }
 
   // Create a new activity
-  Future<ActivityModel> createActivity(ActivityModel activity) async {
+  Future<Activity> createActivity(Activity activity) async {
     try {
       final response = await http.post(
         Uri.parse('$apiUrl/save'),
@@ -34,7 +34,7 @@ class ActivityService {
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return ActivityModel.fromJson(json.decode(response.body));
+        return Activity.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to create activity: ${response.statusCode}');
       }
@@ -58,7 +58,7 @@ class ActivityService {
   }
 
   // Update an activity
-  Future<ActivityModel> updateActivity(int activityId, ActivityModel updatedActivity) async {
+  Future<Activity> updateActivity(int activityId, Activity updatedActivity) async {
     try {
       final response = await http.put(
         Uri.parse('$apiUrl/update/$activityId'),
@@ -67,7 +67,7 @@ class ActivityService {
       );
 
       if (response.statusCode == 200) {
-        return ActivityModel.fromJson(json.decode(response.body));
+        return Activity.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to update activity: ${response.statusCode}');
       }
@@ -77,12 +77,12 @@ class ActivityService {
   }
 
   // Fetch activity by ID
-  Future<ActivityModel> getActivityById(int activityId) async {
+  Future<Activity> getActivityById(int activityId) async {
     try {
       final response = await http.get(Uri.parse('$apiUrl/$activityId'), headers: headers);
 
       if (response.statusCode == 200) {
-        return ActivityModel.fromJson(json.decode(response.body));
+        return Activity.fromJson(json.decode(response.body));
       } else {
         throw Exception('Failed to fetch activity: ${response.statusCode}');
       }

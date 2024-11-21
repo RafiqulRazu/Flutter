@@ -3,6 +3,8 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/User.dart';
+
 class AuthService {
   final String baseUrl = 'http://localhost:8089';
 
@@ -17,6 +19,7 @@ class AuthService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body);
       String token = data['token'];
+      Map<String, dynamic> userMap = data['user'];
 
       // Decode token to get role
       Map<String, dynamic> payload = Jwt.parseJwt(token);
@@ -26,6 +29,7 @@ class AuthService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('authToken', token);
       await prefs.setString('userRole', role);
+      await prefs.setString('user', jsonEncode(userMap));
 
       return true;
     } else {
@@ -34,6 +38,20 @@ class AuthService {
     }
   }
 
+  Future<List<User>> getAllUsers() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/api/user/'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load activities: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching activities: $e');
+    }
+  }
 
   Future<bool> register(Map<String, dynamic> user) async {
     final url = Uri.parse('$baseUrl/register');
@@ -108,4 +126,17 @@ class AuthService {
   Future<bool> isAgent() async {
     return await hasRole(['AGENT']);
   }
+
+  Future<User?> getCurrentUser() async {
+    final sp = await SharedPreferences.getInstance();
+    final userJson = sp.getString("user");
+    if (userJson != null) {
+      User user = User.fromJson(jsonDecode(userJson));
+      return user;
+    } else {
+      return null;
+    }
+  }
+
+
 }

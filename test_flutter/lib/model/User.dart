@@ -8,12 +8,7 @@ class User {
   String? role;
   bool? active;
   bool? enabled;
-  List<Authorities>? authorities;
   String? username;
-  bool? lock;
-  bool? credentialsNonExpired;
-  bool? accountNonExpired;
-  bool? accountNonLocked;
 
   User(
       {this.id,
@@ -25,12 +20,8 @@ class User {
         this.role,
         this.active,
         this.enabled,
-        this.authorities,
-        this.username,
-        this.lock,
-        this.credentialsNonExpired,
-        this.accountNonExpired,
-        this.accountNonLocked});
+        this.username
+      });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,17 +33,7 @@ class User {
     role = json['role'];
     active = json['active'];
     enabled = json['enabled'];
-    if (json['authorities'] != null) {
-      authorities = <Authorities>[];
-      json['authorities'].forEach((v) {
-        authorities!.add(new Authorities.fromJson(v));
-      });
-    }
     username = json['username'];
-    lock = json['lock'];
-    credentialsNonExpired = json['credentialsNonExpired'];
-    accountNonExpired = json['accountNonExpired'];
-    accountNonLocked = json['accountNonLocked'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,14 +47,7 @@ class User {
     data['role'] = this.role;
     data['active'] = this.active;
     data['enabled'] = this.enabled;
-    if (this.authorities != null) {
-      data['authorities'] = this.authorities!.map((v) => v.toJson()).toList();
-    }
     data['username'] = this.username;
-    data['lock'] = this.lock;
-    data['credentialsNonExpired'] = this.credentialsNonExpired;
-    data['accountNonExpired'] = this.accountNonExpired;
-    data['accountNonLocked'] = this.accountNonLocked;
     return data;
   }
 }

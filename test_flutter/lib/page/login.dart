@@ -8,8 +8,8 @@ import 'package:test_flutter/page/registration.dart';
 import 'package:test_flutter/service/AuthService.dart';
 
 class Login extends StatelessWidget {
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
+  final TextEditingController email = TextEditingController()..text = 'testtt2@test';
+  final TextEditingController password = TextEditingController()..text = '123';
 
   final storage = new FlutterSecureStorage();
   AuthService authService=AuthService();
@@ -18,8 +18,15 @@ class Login extends StatelessWidget {
     try {
       final response = await authService.login(email.text, password.text);
 
+      if (!response) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid login credentials')),
+        );
+        return;
+      }
+
       // Successful login, role-based navigation
-      final  role =await authService.getUserRole(); // Get role from AuthService
+      final  role = await authService.getUserRole(); // Get role from AuthService
 
 
       if (role == 'ADMIN') {
