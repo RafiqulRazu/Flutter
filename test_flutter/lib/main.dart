@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: AdminPage(),
+      home: AdminPage(),
       // home: SalesPage(),
       // home: AgentPage(),
-      home: Login(),
+      // home: Login(),
       // home: AddOrderPage(),
     );
   }
