@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/page/customer/AddCustomerPage.dart';
+import 'package:test_flutter/page/lead/LeadPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/activity/CreateActivity.dart';
 import 'package:test_flutter/page/lead/CreateLead.dart';
@@ -86,7 +87,7 @@ class AgentPage extends StatelessWidget {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewActivityPage(activityId: 1,)),
+                                    builder: (context) => ViewActivityPage()),
                               ),
                         ),
                         _buildDashboardCard(
@@ -99,6 +100,18 @@ class AgentPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CreateLeadPage()),
+                              ),
+                        ),
+                        _buildDashboardCard(
+                          context,
+                          icon: Icons.double_arrow,
+                          label: 'All Lead',
+                          color: Colors.deepPurpleAccent,
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewLeadPage()),
                               ),
                         ),
                       ],

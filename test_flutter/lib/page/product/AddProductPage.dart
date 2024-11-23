@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/model/Product.dart';
-import 'package:test_flutter/page/SalesPage.dart';
+import 'package:test_flutter/page/AdminPage.dart';
 import 'package:test_flutter/service/ProductService.dart';
 
 
@@ -23,7 +23,10 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _vatController = TextEditingController();
   String? _status = 'Available'; // Default status value
 
+
   bool _isSubmitting = false;
+
+
 
   Future<void> _createProduct() async {
     if (_formKey.currentState!.validate()) {
@@ -79,7 +82,7 @@ class _AddProductPageState extends State<AddProductPage> {
             // Navigate back to AdminPage
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => SalesPage()),
+              MaterialPageRoute(builder: (context) => AdminPage()),
             );
           },
         ),

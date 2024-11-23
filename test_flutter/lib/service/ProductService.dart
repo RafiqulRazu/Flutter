@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import '../model/Product.dart';
 import 'package:http/http.dart' as http;
@@ -33,8 +32,8 @@ class ProductService {
     try {
       final response = await _dio.post(
         "${apiUrl}save",
-        data: customerData.toJson(), // Corrected to use customerData
-        options: Options(headers: headers), // Added headers for authorization
+        data: customerData.toJson(),
+        // options: Options(headers: headers),
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Product.fromJson(response.data);

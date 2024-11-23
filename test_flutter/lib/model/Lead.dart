@@ -1,60 +1,77 @@
+import 'package:test_flutter/model/Activity.dart';
+import 'package:test_flutter/model/User.dart';
+
+// class Lead {
+//   final int? id; // Nullable for new leads
+//   final int activityId;
+//   final int salesExecutiveId;
+//   final DateTime createdAt;
+//
+//   Lead({
+//     this.id,
+//     required this.activityId,
+//     required this.salesExecutiveId,
+//     required this.createdAt,
+//   });
+//
+//   // Convert from JSON
+//   factory Lead.fromJson(Map<String, dynamic> json) {
+//     return Lead(
+//       id: json['id'] as int?,
+//       activityId: json['activityId'] as int,
+//       salesExecutiveId: json['salesExecutiveId'] as int,
+//       createdAt: DateTime.parse(json['createdAt'] as String),
+//     );
+//   }
+//
+//   // Convert to JSON
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'id': id,
+//       'activityId': activityId,
+//       'salesExecutiveId': salesExecutiveId,
+//       'createdAt': createdAt.toIso8601String(),
+//     };
+//   }
+// }
+
+
+
+
 class Lead {
-  int? id;
-  Customer? customer;
-  String? createdAt;
-  String? updatedAt;
+  final int id; // Lead ID
+  final Activity? activity; // Associated Activity
+  final User? salesExecutive; // Sales Executive associated with the lead
+  final DateTime createdAt; // Lead creation date
 
-  Lead({this.id, this.customer, this.createdAt, this.updatedAt});
+  Lead({
+    required this.id,
+    this.activity,
+    this.salesExecutive,
+    required this.createdAt,
+  });
 
-  Lead.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    customer = json['customer'] != null
-        ? new Customer.fromJson(json['customer'])
-        : null;
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
+  // Factory constructor to create a Lead object from JSON
+  factory Lead.fromJson(Map<String, dynamic> json) {
+    return Lead(
+      id: json['id'],
+      activity: json['activity'] != null ? Activity.fromJson(json['activity']) : null,
+      salesExecutive: json['salesExecutive'] != null
+          ? User.fromJson(json['salesExecutive'])
+          : null,
+      createdAt: DateTime.parse(json['createdAt']),
+    );
   }
 
+  // Method to convert Lead object to JSON
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.customer != null) {
-      data['customer'] = this.customer!.toJson();
-    }
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
+    return {
+      'id': id,
+      'activity': activity?.toJson(),
+      'salesExecutive': salesExecutive?.toJson(),
+      'createdAt': createdAt.toIso8601String(),
+    };
   }
 }
 
-class Customer {
-  int? id;
-  String? name;
-  String? email;
-  String? phone;
-  String? address;
-  String? company;
 
-  Customer(
-      {this.id, this.name, this.email, this.phone, this.address, this.company});
-
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    address = json['address'];
-    company = json['company'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['address'] = this.address;
-    data['company'] = this.company;
-    return data;
-  }
-}

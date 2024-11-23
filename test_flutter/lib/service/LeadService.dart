@@ -5,7 +5,7 @@ import '../model/Lead.dart'; // Import the Lead model class (ensure you have a L
 
 class LeadService {
   final Dio _dio = Dio();
-  final String apiUrl = "http://localhost:8080/api/lead/"; // Replace with your actual API URL
+  final String apiUrl = "http://localhost:8089/api/lead/"; // Replace with your actual API URL
 
   // Get all leads
   Future<List<Lead>> getAllLeads() async {

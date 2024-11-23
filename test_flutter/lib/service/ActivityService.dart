@@ -77,19 +77,6 @@ class ActivityService {
   }
 
 
-  // Future<Activity> getActivityById(int activityId) async {
-  //   try {
-  //     final response = await http.get(Uri.parse('$apiUrl/$activityId'), headers: headers);
-  //
-  //     if (response.statusCode == 200) {
-  //       return Activity.fromJson(json.decode(response.body));
-  //     } else {
-  //       throw Exception('Failed to fetch activity: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error fetching activity by ID: $e');
-  //   }
-  // }
 
   Future<Activity?> getActivityById({required int activityId}) async {
     try {
