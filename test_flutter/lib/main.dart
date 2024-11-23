@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/activity/ViewActivity.dart';
+import 'package:test_flutter/page/customer/AddCustomerPage.dart';
 import 'package:test_flutter/page/order/AddOrderPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/AdminPage.dart';
@@ -21,11 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AdminPage(),
+      // home: AdminPage(),
       // home: SalesPage(),
-      // home: AgentPage(),
+      home: AgentPage(),
       // home: Login(),
-      // home: AddOrderPage(),
+      // home: AddCustomerPage(),
+      // home: ViewActivityPage(),
     );
   }
 }

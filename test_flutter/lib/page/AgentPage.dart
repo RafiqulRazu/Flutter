@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_flutter/page/customer/AddCustomerPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/activity/CreateActivity.dart';
-import 'package:test_flutter/page/CreateLead.dart';
+import 'package:test_flutter/page/lead/CreateLead.dart';
 import 'package:test_flutter/page/Login.dart';
 import 'package:test_flutter/page/activity/ViewActivity.dart';
 import 'package:test_flutter/page/customer/ViewCustomerPage.dart';
@@ -15,7 +15,7 @@ class AgentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Admin Dashboard'),
+          title: Text('AGENT DASHBOARD'),
           automaticallyImplyLeading: false, // Hides the back button
           backgroundColor: Colors.teal.shade600,
           centerTitle: true,
@@ -26,7 +26,7 @@ class AgentPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Welcome, Admin!',
+                    'Welcome, Agent!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -86,7 +86,7 @@ class AgentPage extends StatelessWidget {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ViewActivityPage()),
+                                    builder: (context) => ViewActivityPage(activityId: 1,)),
                               ),
                         ),
                         _buildDashboardCard(

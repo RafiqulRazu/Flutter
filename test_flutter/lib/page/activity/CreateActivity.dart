@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_flutter/model/Activity.dart';
 import 'package:test_flutter/model/Customer.dart';
 import 'package:test_flutter/model/User.dart';
+import 'package:test_flutter/page/AgentPage.dart';
 import 'package:test_flutter/service/ActivityService.dart';
 import 'package:test_flutter/service/AuthService.dart';
 import 'package:test_flutter/service/CustomerService.dart';
@@ -119,6 +120,16 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Activity'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to AdminPage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AgentPage()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

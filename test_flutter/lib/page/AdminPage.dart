@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/customer/AddCustomerPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/Login.dart';
 import 'package:test_flutter/page/customer/ViewCustomerPage.dart';
@@ -45,6 +46,16 @@ class AdminPage extends StatelessWidget {
                           onTap: () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => ViewCustomerPage()),
+                          ),
+                        ),
+                        _buildDashboardCard(
+                          context,
+                          icon: Icons.people,
+                          label: 'Add Customer',
+                          color: Colors.deepPurpleAccent,
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddCustomerPage()),
                           ),
                         ),
                         _buildDashboardCard(
