@@ -3,20 +3,20 @@ import 'package:test_flutter/model/User.dart';
 
 
 class Activity {
-  int id;
-  String activityType;
-  String description;
-  String activityDate;
-  Customer customer;
-  User agent;
+  int? id;
+  String? activityType;
+  String? description;
+  String? activityDate;
+  Customer? customer;
+  User? agent;
 
   Activity({
-    required this.id,
-    required this.activityType,
-    required this.description,
-    required this.activityDate,
-    required this.customer,
-    required this.agent,
+    this.id,
+    this.activityType,
+    this.description,
+    this.activityDate,
+    this.customer,
+    this.agent,
   });
 
   // Factory constructor for JSON deserialization
@@ -38,8 +38,8 @@ class Activity {
       'activityType': activityType,
       'description': description,
       'activityDate': activityDate,
-      'customer': customer.toJson(),
-      'agent': agent.toJson(),
+      'customer': customer?.toJson(),
+      'agent': agent?.toJson(),
     };
   }
 

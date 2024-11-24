@@ -21,7 +21,7 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _stockController = TextEditingController();
   final TextEditingController _vatController = TextEditingController();
-  String? _status = 'Available'; // Default status value
+  String? _status = 'AVAILABLE'; // Default status value
 
 
   bool _isSubmitting = false;
@@ -122,7 +122,7 @@ class _AddProductPageState extends State<AddProductPage> {
               DropdownButtonFormField<String>(
                 value: _status,
                 decoration: InputDecoration(labelText: "Status"),
-                items: ["Available", "Out of Stock"]
+                items: ["AVAILABLE", "OUT_OF_STOCK"]
                     .map((status) => DropdownMenuItem(
                   value: status,
                   child: Text(status),

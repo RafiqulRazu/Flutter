@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/model/Activity.dart';
+import 'package:test_flutter/model/User.dart';
 import 'package:test_flutter/service/ActivityService.dart';
+import 'package:test_flutter/service/AuthService.dart';
+import 'package:test_flutter/service/LeadService.dart';
+
+import '../../model/Lead.dart';
 
 class ViewActivityPage extends StatefulWidget {
   @override
@@ -9,6 +14,8 @@ class ViewActivityPage extends StatefulWidget {
 
 class _ViewActivityPageState extends State<ViewActivityPage> {
   final ActivityService _activityService = ActivityService();
+  final AuthService _authService = AuthService();
+  final LeadService _leadService = LeadService();
   late Future<List<Activity>> _activities;
 
   @override
@@ -40,11 +47,23 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
                 final activity = activities[index];
                 return ListTile(
                   leading: Icon(Icons.event_note),
-                  title: Text(activity.activityType),
+                  title: Text(activity.activityType ?? ''),
                   subtitle: Text('Date: ${activity.activityDate}'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _deleteActivity(activity.id),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteActivity(activity.id!),
+                      ),
+                      TextButton(
+                        onPressed: () => _showAssignLeadDialog(activity),
+                        child: Text(
+                          'Lead',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                    ],
                   ),
                   onTap: () => _viewActivityDetails(activity),
                 );
@@ -54,6 +73,90 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
         },
       ),
     );
+  }
+
+  // Show Dialog to Assign Lead
+  void _showAssignLeadDialog(Activity activity) async {
+    List<User>? salesExecutives;
+    User? selectedSalesExecutive;
+
+    // Fetch Sales Executives
+    try {
+      salesExecutives = await _authService.getAllSalesExecutives();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching sales executives: $e')),
+      );
+      return;
+    }
+
+    // Show Dialog
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Assign Lead'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButton<User>(
+                hint: Text('Select Sales Executive'),
+                value: selectedSalesExecutive,
+                items: salesExecutives
+                    ?.map((user) => DropdownMenuItem(
+                  value: user,
+                  child: Text(user.name ?? ''),
+                ))
+                    .toList(),
+                onChanged: (User? value) {
+                  setState(() {
+                    selectedSalesExecutive = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (selectedSalesExecutive != null) {
+                  await _saveLead(activity, selectedSalesExecutive!);
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Please select a Sales Executive')),
+                  );
+                }
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Save Lead
+  Future<void> _saveLead(Activity activity, User salesExecutive) async {
+    final lead = {
+      "activity": {"id": activity.id},
+      "salesExecutive": {"id": salesExecutive.id},
+    };
+
+    try {
+      await _leadService.createLead(lead);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lead assigned successfully!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error assigning lead: $e')),
+      );
+    }
   }
 
   // Method to delete an activity
@@ -100,90 +203,3 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
     );
   }
 }
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:test_flutter/service/ActivityService.dart';
-// import 'package:test_flutter/model/Activity.dart';
-//
-// import '../AgentPage.dart';
-//
-// class ViewActivityPage extends StatefulWidget {
-//   final int activityId;
-//
-//   const ViewActivityPage({Key? key, required this.activityId}) : super(key: key);
-//
-//   @override
-//   _ViewActivityPageState createState() => _ViewActivityPageState();
-// }
-//
-// class _ViewActivityPageState extends State<ViewActivityPage> {
-//   late Future<Activity?> _activityFuture;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     // Fetch the activity by ID when the page initializes
-//     final activityService = ActivityService();
-//     _activityFuture = activityService.getActivityById(activityId: widget.activityId);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//           title: Text('View Activity'),
-//           leading: IconButton(
-//           icon: Icon(Icons.arrow_back),
-//           onPressed: () {
-//             // Navigate back to AdminPage
-//             Navigator.pushReplacement(
-//               context,
-//               MaterialPageRoute(builder: (context) => AgentPage()),
-//             );
-//           },
-//         ),
-//       ),
-//       body: FutureBuilder<Activity?>(
-//         future: _activityFuture,
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             // Show loading indicator while fetching data
-//             return Center(child: CircularProgressIndicator());
-//           } else if (snapshot.hasError) {
-//             // Display error message if an error occurs
-//             return Center(child: Text('Error: ${snapshot.error}'));
-//           } else if (snapshot.hasData && snapshot.data != null) {
-//             // Render the activity details
-//             Activity activity = snapshot.data!;
-//             return Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(
-//                     'Activity ID: ${activity.id}',
-//                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-//                   ),
-//                   SizedBox(height: 8),
-//                   Text('Description: ${activity.description}'),
-//                   SizedBox(height: 8),
-//                   Text('Date: ${activity.activityDate}'),
-//                   SizedBox(height: 8),
-//                   Text('Type: ${activity.activityType}'),
-//                 ],
-//               ),
-//             );
-//           } else {
-//             // Handle case where no data is returned
-//             return Center(child: Text('No Activity Found'));
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
-

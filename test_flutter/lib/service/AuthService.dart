@@ -53,6 +53,51 @@ class AuthService {
     }
   }
 
+  Future<List<User>> getAllSalesExecutives() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/api/user/getAllSalesExecutives'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load sales execs: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching sales execs: $e');
+    }
+  }
+
+  Future<List<User>> getAllAdmins() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/api/user/getAllAdmins'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load admins: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching admins: $e');
+    }
+  }
+
+  Future<List<User>> getAllAgents() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/api/user/getAllAgents'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((json) => User.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load agents: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching agents: $e');
+    }
+  }
+
   Future<bool> register(Map<String, dynamic> user) async {
     final url = Uri.parse('$baseUrl/register');
     final headers = {'Content-Type': 'application/json'};

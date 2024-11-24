@@ -8,6 +8,7 @@ import 'package:test_flutter/page/registration.dart';
 import 'package:test_flutter/service/AuthService.dart';
 
 class Login extends StatelessWidget {
+  // final TextEditingController email = TextEditingController()..text = 'rafiqulislam977@gmail.com';
   final TextEditingController email = TextEditingController()..text = 'testtt2@test';
   final TextEditingController password = TextEditingController()..text = '123';
 

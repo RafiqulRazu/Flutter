@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: AdminPage(),
       // home: SalesPage(),
-      home: AgentPage(),
+      home: Login(),
       // home: Login(),
       // home: AddCustomerPage(),
       // home: ViewActivityPage(),

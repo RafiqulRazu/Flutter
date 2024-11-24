@@ -24,15 +24,17 @@ class LeadService {
   }
 
   // Create a new lead
-  Future<Lead?> createLead(Lead leadData) async {
+  Future<Lead?> createLead(leadData) async {
     final authService = AuthService();
     final token = await authService.getToken();
-    final headers = {'Authorization': 'Bearer $token'};
+    final headers = {
+      'Authorization': 'Bearer $token', // Add token if required
+    };
 
     try {
       final response = await _dio.post(
         "${apiUrl}save", // Adjust the endpoint based on your backend
-        data: leadData.toJson(), // Assuming the Lead model has a `toJson` method
+        data: leadData, // Assuming the Lead model has a `toJson` method
         options: Options(headers: headers), // Added headers for authorization
       );
 
