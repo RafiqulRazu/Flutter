@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/SalesPage.dart';
 
 class AddOrderPage extends StatefulWidget {
   @override
@@ -72,6 +73,16 @@ class _AddOrderPageState extends State<AddOrderPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Order'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to AdminPage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SalesPage()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

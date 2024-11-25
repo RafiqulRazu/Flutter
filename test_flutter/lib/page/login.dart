@@ -9,8 +9,9 @@ import 'package:test_flutter/service/AuthService.dart';
 
 class Login extends StatelessWidget {
   // final TextEditingController email = TextEditingController()..text = 'rafiqulislam977@gmail.com';
-  final TextEditingController email = TextEditingController()..text = 'testtt2@test';
-  final TextEditingController password = TextEditingController()..text = '123';
+  final TextEditingController email = TextEditingController()..text = 'sales1@gmail.com';
+  // final TextEditingController email = TextEditingController()..text = 'testtt2@test';
+  final TextEditingController password = TextEditingController()..text = '654321';
 
   final storage = new FlutterSecureStorage();
   AuthService authService=AuthService();

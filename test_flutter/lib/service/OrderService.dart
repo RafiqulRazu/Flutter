@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:test_flutter/model/order.dart';
 
 class OrderService {
-  final String baseUrl = 'http://localhost:8080/api/order';
+  final String baseUrl = 'http://localhost:8089/api/order';
 
   // Create a new order
   Future<Order> createOrder(Order order) async {

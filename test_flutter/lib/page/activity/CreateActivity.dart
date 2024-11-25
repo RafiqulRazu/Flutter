@@ -3,6 +3,7 @@ import 'package:test_flutter/model/Activity.dart';
 import 'package:test_flutter/model/Customer.dart';
 import 'package:test_flutter/model/User.dart';
 import 'package:test_flutter/page/AgentPage.dart';
+import 'package:test_flutter/page/activity/ViewActivity.dart';
 import 'package:test_flutter/service/ActivityService.dart';
 import 'package:test_flutter/service/AuthService.dart';
 import 'package:test_flutter/service/CustomerService.dart';
@@ -106,7 +107,10 @@ class _CreateActivityPageState extends State<CreateActivityPage> {
           TextButton(
             onPressed: () {
               Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Navigate back
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ViewActivityPage()),
+              );
             },
             child: Text('OK'),
           ),
