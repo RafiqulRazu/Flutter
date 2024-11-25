@@ -1,9 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:test_flutter/model/order.dart';
+import 'package:test_flutter/model/Order.dart';
+
+import 'AuthService.dart';
 
 class OrderService {
   final String baseUrl = 'http://localhost:8089/api/order';
+  final AuthService authService = AuthService();
+
+  Future<List<Order>> getAllOrders() async {
+    final response = await http.get(Uri.parse('$baseUrl/'));
+    if (response.statusCode == 200) {
+      final List<dynamic> ordersJson = json.decode(response.body);
+      return ordersJson.map((json) => Order.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load orders');
+    }
+  }
 
   // Create a new order
   Future<Order> createOrder(Order order) async {
@@ -31,17 +44,6 @@ class OrderService {
     }
   }
 
-  // Fetch all orders
-  Future<List<Order>> getAllOrders() async {
-    final response = await http.get(Uri.parse(baseUrl));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonList = jsonDecode(response.body);
-      return jsonList.map((json) => Order.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch orders');
-    }
-  }
 
   // Delete an order by ID
   Future<void> deleteOrder(int id) async {

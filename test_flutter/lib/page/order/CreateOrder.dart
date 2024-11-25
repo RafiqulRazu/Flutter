@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class CreateLeadPage extends StatefulWidget {
+
+class CreateOrderPage extends StatefulWidget {
   @override
-  _CreateLeadPageState createState() => _CreateLeadPageState();
+  _CreateOrderPageState createState() => _CreateOrderPageState();
 }
 
-class _CreateLeadPageState extends State<CreateLeadPage> {
+class _CreateOrderPageState extends State<CreateOrderPage> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
@@ -87,7 +88,6 @@ class _CreateLeadPageState extends State<CreateLeadPage> {
           key: _formKey,
           child: ListView(
             children: [
-              // Customer ID
               TextFormField(
                 controller: _customerIdController,
                 keyboardType: TextInputType.number,
@@ -99,7 +99,6 @@ class _CreateLeadPageState extends State<CreateLeadPage> {
                   return null;
                 },
               ),
-              // Sold By (User ID)
               TextFormField(
                 controller: _soldByController,
                 keyboardType: TextInputType.number,
@@ -111,15 +110,12 @@ class _CreateLeadPageState extends State<CreateLeadPage> {
                   return null;
                 },
               ),
-              // Lead ID
               TextFormField(
                 controller: _leadIdController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: "Lead ID"),
               ),
               SizedBox(height: 16),
-
-              // Order Items Section
               Text(
                 "Order Items",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -168,31 +164,14 @@ class _CreateLeadPageState extends State<CreateLeadPage> {
                 child: Text("Add Order Item"),
               ),
               SizedBox(height: 16),
-
-              // Order Date
               ListTile(
                 title: Text("Order Date"),
-                subtitle: Text(_orderDate.toLocal().toString().split(' ')[0]),
-                trailing: IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    final pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: _orderDate,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
-                    );
-                    if (pickedDate != null) {
-                      setState(() {
-                        _orderDate = pickedDate;
-                      });
-                    }
-                  },
+                subtitle: Text(
+                  _orderDate.toLocal().toString().split(' ')[0], // Format to show only date
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
               SizedBox(height: 16),
-
-              // Submit Button
               ElevatedButton(
                 onPressed: createOrder,
                 child: Text("Submit Order"),

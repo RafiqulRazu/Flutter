@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/page/order/AddOrderPage.dart';
-import 'package:test_flutter/page/order/ViewOrderPage.dart';
+import 'package:test_flutter/page/order/CreateOrder.dart';
+import 'package:test_flutter/page/lead/CreateLead.dart';
+import 'package:test_flutter/page/order/OrderListPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/login.dart';
+
+import 'order/CreateOrder.dart';
 
 class SalesPage extends StatelessWidget {
   const SalesPage({super.key});
@@ -44,7 +47,7 @@ class SalesPage extends StatelessWidget {
                           color: Colors.deepPurpleAccent,
                           onTap: () => Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => AddOrderPage()),
+                            MaterialPageRoute(builder: (context) => CreateOrderPage()),
                           ),
                         ),
                         _buildDashboardCard(
@@ -54,7 +57,7 @@ class SalesPage extends StatelessWidget {
                           color: Colors.deepPurpleAccent,
                           onTap: () => Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => ViewOrderPage()),
+                            MaterialPageRoute(builder: (context) => OrderListPage()),
                           ),
                         ),
                       ],

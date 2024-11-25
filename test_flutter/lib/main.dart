@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/page/activity/ViewActivity.dart';
 import 'package:test_flutter/page/customer/AddCustomerPage.dart';
-import 'package:test_flutter/page/order/AddOrderPage.dart';
 import 'package:test_flutter/page/product/AddProductPage.dart';
 import 'package:test_flutter/page/AdminPage.dart';
 import 'package:test_flutter/page/AgentPage.dart';
