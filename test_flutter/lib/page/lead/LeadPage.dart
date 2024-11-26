@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:test_flutter/model/Lead.dart';
 import 'package:test_flutter/page/AgentPage.dart';
+import 'package:test_flutter/page/SalesPage.dart';
 import 'package:test_flutter/service/LeadService.dart';
+
+import '../../model/User.dart';
 
 class ViewLeadPage extends StatefulWidget {
   @override
@@ -11,6 +14,7 @@ class ViewLeadPage extends StatefulWidget {
 class _ViewLeadPageState extends State<ViewLeadPage> {
   final LeadService _leadService = LeadService();
   late Future<List<Lead>> _leadsFuture;
+  User? _currentUser;
 
   @override
   void initState() {
@@ -18,19 +22,39 @@ class _ViewLeadPageState extends State<ViewLeadPage> {
     _leadsFuture = _leadService.getAllLeads(); // Fetch leads on initialization
   }
 
+  bool _isAgent() {
+    return _currentUser?.role == 'AGENT';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("View Leads"),
+        // leading: IconButton(
+        //         //   icon: Icon(Icons.arrow_back),
+        //         //   onPressed: () {
+        //         //     // Navigate back to AdminPage
+        //         //     Navigator.pushReplacement(
+        //         //       context,
+        //         //       MaterialPageRoute(builder: (context) => AgentPage()),
+        //         //     );
+        //         //   },
+        //         // ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate back to AdminPage
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => AgentPage()),
-            );
+            if (_isAgent()) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AgentPage()),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SalesPage()),
+              );
+            }
           },
         ),
       ),
@@ -91,6 +115,7 @@ class LeadDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Lead Details (ID: ${lead.id})"),
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

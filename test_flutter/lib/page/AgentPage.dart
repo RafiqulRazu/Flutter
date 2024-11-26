@@ -44,30 +44,6 @@ class AgentPage extends StatelessWidget {
                       children: [
                         _buildDashboardCard(
                           context,
-                          icon: Icons.people,
-                          label: 'Create Customer',
-                          color: Colors.deepPurpleAccent,
-                          onTap: () =>
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddCustomerPage()),
-                              ),
-                        ),
-                        _buildDashboardCard(
-                          context,
-                          icon: Icons.people,
-                          label: 'View Customer',
-                          color: Colors.deepPurpleAccent,
-                          onTap: () =>
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewCustomerPage()),
-                              ),
-                        ),
-                        _buildDashboardCard(
-                          context,
                           icon: Icons.shopping_cart,
                           label: 'Create Activity',
                           color: Colors.deepPurpleAccent,
@@ -90,18 +66,18 @@ class AgentPage extends StatelessWidget {
                                     builder: (context) => ViewActivityPage()),
                               ),
                         ),
-                        _buildDashboardCard(
-                          context,
-                          icon: Icons.shopping_cart,
-                          label: 'Create Lead',
-                          color: Colors.deepPurpleAccent,
-                          onTap: () =>
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateLeadPage()),
-                              ),
-                        ),
+                        // _buildDashboardCard(
+                        //   context,
+                        //   icon: Icons.shopping_cart,
+                        //   label: 'Create Lead',
+                        //   color: Colors.deepPurpleAccent,
+                        //   onTap: () =>
+                        //       Navigator.pushReplacement(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => CreateLeadPage()),
+                        //       ),
+                        // ),
                         _buildDashboardCard(
                           context,
                           icon: Icons.double_arrow,
@@ -112,6 +88,18 @@ class AgentPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ViewLeadPage()),
+                              ),
+                        ),
+                        _buildDashboardCard(
+                          context,
+                          icon: Icons.people,
+                          label: 'View Customer',
+                          color: Colors.deepPurpleAccent,
+                          onTap: () =>
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewCustomerPage()),
                               ),
                         ),
                       ],

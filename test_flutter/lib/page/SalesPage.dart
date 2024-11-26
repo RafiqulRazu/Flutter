@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/lead/LeadPage.dart';
 import 'package:test_flutter/page/order/CreateOrder.dart';
 import 'package:test_flutter/page/lead/CreateLead.dart';
 import 'package:test_flutter/page/order/OrderListPage.dart';
@@ -58,6 +59,16 @@ class SalesPage extends StatelessWidget {
                           onTap: () => Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context) => OrderListPage()),
+                          ),
+                        ),
+                        _buildDashboardCard(
+                          context,
+                          icon: Icons.verified_user,
+                          label: 'Order List',
+                          color: Colors.deepPurpleAccent,
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ViewLeadPage()),
                           ),
                         ),
                       ],

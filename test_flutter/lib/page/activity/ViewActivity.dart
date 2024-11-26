@@ -86,10 +86,8 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
     );
   }
 
-  // Show Dialog to Assign Lead
   void _showAssignLeadDialog(Activity activity) async {
     List<User>? salesExecutives;
-    User? selectedSalesExecutive;
 
     // Fetch Sales Executives
     try {
@@ -101,62 +99,73 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
       return;
     }
 
-    // Show Dialog
+    // Show Dialog with Local State Management
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Assign Lead'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButton<User>(
-                hint: Text('Select Sales Executive'),
-                value: selectedSalesExecutive,
-                items: salesExecutives
-                    ?.map((user) => DropdownMenuItem(
-                  value: user,
-                  child: Text(user.name ?? ''),
-                ))
-                    .toList(),
-                onChanged: (User? value) {
-                  setState(() {
-                    selectedSalesExecutive = value;
-                  });
-                },
+        User? selectedSalesExecutive;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Assign Lead'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<User>(
+                    hint: Text('Select Sales Executive'),
+                    value: selectedSalesExecutive,
+                    items: salesExecutives
+                        ?.map((user) =>
+                        DropdownMenuItem(
+                          value: user,
+                          child: Text(user.name ?? ''),
+                        ))
+                        .toList(),
+                    onChanged: (User? value) {
+                      setState(() {
+                        selectedSalesExecutive = value;
+                      });
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                if (selectedSalesExecutive != null) {
-                  await _saveLead(activity, selectedSalesExecutive!);
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please select a Sales Executive')),
-                  );
-                }
-              },
-              child: Text('Save'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (selectedSalesExecutive != null) {
+                      await _saveLead(activity, selectedSalesExecutive!);
+                      Navigator.pop(context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(
+                            'Please select a Sales Executive')),
+                      );
+                    }
+                  },
+                  child: Text('Save'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
 
+
   // Save Lead
   Future<void> _saveLead(Activity activity, User salesExecutive) async {
-    final lead = {
-      "activity": {"id": activity.id},
-      "salesExecutive": {"id": salesExecutive.id},
-    };
+    var lead = Lead(
+        id: null,
+        activity: activity,
+        salesExecutive: salesExecutive,
+        createdAt: null
+    );
 
     try {
       await _leadService.createLead(lead);
@@ -191,26 +200,27 @@ class _ViewActivityPageState extends State<ViewActivityPage> {
   void _viewActivityDetails(Activity activity) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Activity Details'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Type: ${activity.activityType}'),
-            Text('Date: ${activity.activityDate}'),
-            Text('Description: ${activity.description}'),
-            if (activity.customer != null)
-              Text('Customer: ${activity.customer!.name}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
+      builder: (context) =>
+          AlertDialog(
+            title: Text('Activity Details'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Type: ${activity.activityType}'),
+                Text('Date: ${activity.activityDate}'),
+                Text('Description: ${activity.description}'),
+                if (activity.customer != null)
+                  Text('Customer: ${activity.customer!.name}'),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Close'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }

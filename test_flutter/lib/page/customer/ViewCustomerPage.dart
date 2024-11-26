@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/page/AgentPage.dart';
 import '../../model/Customer.dart'; // Adjust the path as necessary
+import '../../model/User.dart';
 import '../../service/CustomerService.dart';
 import 'package:test_flutter/page/AdminPage.dart';
 
@@ -11,12 +13,17 @@ class ViewCustomerPage extends StatefulWidget {
 class _ViewCustomerPageState extends State<ViewCustomerPage> {
   final CustomerService _customerService = CustomerService();
   List<Customer> _customers = [];
+  User? _currentUser;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _fetchCustomers();
+  }
+
+  bool _isAdmin() {
+    return _currentUser?.role == 'ADMIN';
   }
 
   Future<void> _fetchCustomers() async {
@@ -39,14 +46,30 @@ class _ViewCustomerPageState extends State<ViewCustomerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Customers List"),
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back),
+        //   onPressed: () {
+        //     // Navigate back to AdminPage
+        //     Navigator.pushReplacement(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => AdminPage()),
+        //     );
+        //   },
+        // ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate back to AdminPage
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => AdminPage()),
-            );
+            if (_isAdmin()) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AdminPage()),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AgentPage()),
+              );
+            }
           },
         ),
       ),
