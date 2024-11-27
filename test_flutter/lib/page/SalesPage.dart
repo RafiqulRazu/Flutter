@@ -64,7 +64,7 @@ class SalesPage extends StatelessWidget {
                         _buildDashboardCard(
                           context,
                           icon: Icons.verified_user,
-                          label: 'Order List',
+                          label: 'View Lead',
                           color: Colors.deepPurpleAccent,
                           onTap: () => Navigator.pushReplacement(
                             context,

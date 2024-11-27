@@ -1,7 +1,13 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:test_flutter/model/Customer.dart';
+import 'package:test_flutter/model/Product.dart';
+import 'package:test_flutter/model/Order.dart';
+import 'package:test_flutter/model/User.dart';
+import 'package:test_flutter/service/CustomerService.dart';
+import 'package:test_flutter/service/ProductService.dart';
+import 'package:test_flutter/service/AuthService.dart';
+import 'package:test_flutter/service/OrderService.dart';
+import 'package:test_flutter/model/OrderItem.dart';
 
 class CreateOrderPage extends StatefulWidget {
   @override
@@ -11,170 +17,205 @@ class CreateOrderPage extends StatefulWidget {
 class _CreateOrderPageState extends State<CreateOrderPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
-  final TextEditingController _customerIdController = TextEditingController();
-  final TextEditingController _soldByController = TextEditingController();
-  final TextEditingController _leadIdController = TextEditingController();
+  // Services
+  final CustomerService _customerService = CustomerService();
+  final ProductService _productService = ProductService();
+  final OrderService _orderService = OrderService();
+  final AuthService _authService = AuthService();
 
-  List<Map<String, dynamic>> _orderItems = [];
+  // State variables
+  List<Customer> _customers = [];
+  List<Product> _products = [];
+  Customer? _selectedCustomer;
+  List<OrderItem> _orderItems = [];
   DateTime _orderDate = DateTime.now();
+  late User _currentUser;
 
-  Future<void> createOrder() async {
-    if (!_formKey.currentState!.validate()) return;
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
 
-    final url = Uri.parse('http://localhost:8080/api/order/save');
-    final Map<String, dynamic> payload = {
-      "customer": {"id": int.parse(_customerIdController.text)},
-      "soldBy": {"id": int.parse(_soldByController.text)},
-      "lead": {"id": int.parse(_leadIdController.text)},
-      "orderItems": _orderItems,
-      "orderDate": _orderDate.toIso8601String(),
-    };
-
+  void _loadData() async {
     try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(payload),
-      );
+      final customers = await _customerService.getAllCustomers();
+      final products = await _productService.getAllProducts();
+      final currentUser = await _authService.getCurrentUser();
 
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Order created successfully!'),
-          backgroundColor: Colors.green,
-        ));
-        Navigator.pop(context);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Failed to create order. Error: ${response.body}'),
-          backgroundColor: Colors.red,
-        ));
-      }
+      setState(() {
+        _customers = customers;
+        _products = products;
+        _currentUser = currentUser!;
+      });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('An error occurred: $e'),
-        backgroundColor: Colors.red,
-      ));
+      _showErrorDialog('Error loading data: $e');
     }
   }
 
-  void _addOrderItem() {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _addOrderItem(Product product, int quantity) {
     setState(() {
-      _orderItems.add({"product": {"id": 0}, "quantity": 0});
+      _orderItems.add(OrderItem(product: product, quantity: quantity));
     });
   }
 
-  void _updateOrderItem(int index, String key, dynamic value) {
-    setState(() {
-      _orderItems[index][key] = value;
-    });
+  void _showQuantityDialog(Product product) {
+    final _quantityController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Enter Quantity"),
+        content: TextField(
+          controller: _quantityController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(labelText: "Quantity"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final quantity = int.tryParse(_quantityController.text);
+              if (quantity != null && quantity > 0) {
+                _addOrderItem(product, quantity);
+                Navigator.pop(context);
+              }
+            },
+            child: Text("Add"),
+          ),
+        ],
+      ),
+    );
   }
 
-  void _removeOrderItem(int index) {
-    setState(() {
-      _orderItems.removeAt(index);
-    });
+  void _submitOrder() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    try {
+      final newOrder = Order(
+        id: 0, // ID auto-generated by the server
+        customer: _selectedCustomer,
+        soldBy: _currentUser,
+        orderItems: _orderItems,
+        orderDate: _orderDate,
+        totalAmount: _orderItems.fold(
+          0.0,
+              (sum, item) => sum + item.product.unitPrice! * item.quantity,
+        ),
+        status: OrderStatus.PENDING, // Default status
+      );
+
+      await _orderService.createOrder(newOrder);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Order created successfully!")),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      _showErrorDialog("Failed to create order: $e");
+    }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Create Order"),
-      ),
+      appBar: AppBar(title: Text("Create Order")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
-                controller: _customerIdController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Customer ID"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter a customer ID.";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _soldByController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Sold By (User ID)"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter the ID of the sales user.";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _leadIdController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: "Lead ID"),
-              ),
-              SizedBox(height: 16),
-              Text(
-                "Order Items",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _orderItems.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(labelText: "Product ID"),
-                            onChanged: (value) {
-                              _updateOrderItem(index, "product", {"id": int.parse(value)});
-                            },
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(labelText: "Quantity"),
-                            onChanged: (value) {
-                              _updateOrderItem(index, "quantity", int.parse(value));
-                            },
-                          ),
-                          SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () => _removeOrderItem(index),
-                            child: Text("Remove Item"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              // Customer Dropdown
+              DropdownButtonFormField<Customer>(
+                decoration: InputDecoration(labelText: "Select Customer"),
+                value: _selectedCustomer,
+                onChanged: (value) => setState(() => _selectedCustomer = value),
+                items: _customers.map((customer) {
+                  return DropdownMenuItem(
+                    value: customer,
+                    child: Text("${customer.name} (${customer.id})"),
                   );
+                }).toList(),
+                validator: (value) =>
+                value == null ? "Please select a customer" : null,
+              ),
+              SizedBox(height: 16),
+
+              // Product Dropdown with Quantity
+              DropdownButtonFormField<Product>(
+                decoration: InputDecoration(labelText: "Select Product"),
+                onChanged: (value) {
+                  if (value != null) {
+                    _showQuantityDialog(value);
+                  }
+                },
+                items: _products.map((product) {
+                  return DropdownMenuItem(
+                    value: product,
+                    child: Text("${product.name} (${product.id})"),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 16),
+
+              // Display Selected Products
+              if (_orderItems.isNotEmpty) ...[
+                Text(
+                  "Order Items:",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ..._orderItems.map((item) => ListTile(
+                  title: Text(item.product.name!),
+                  subtitle: Text("Quantity: ${item.quantity}"),
+                )),
+              ],
+              SizedBox(height: 16),
+
+              // Order Date
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(labelText: "Order Date"),
+                controller: TextEditingController(
+                  text: "${_orderDate.toLocal()}".split(' ')[0],
+                ),
+                onTap: () async {
+                  final selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: _orderDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (selectedDate != null) {
+                    setState(() => _orderDate = selectedDate);
+                  }
                 },
               ),
-              ElevatedButton(
-                onPressed: _addOrderItem,
-                child: Text("Add Order Item"),
-              ),
               SizedBox(height: 16),
-              ListTile(
-                title: Text("Order Date"),
-                subtitle: Text(
-                  _orderDate.toLocal().toString().split(' ')[0], // Format to show only date
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              SizedBox(height: 16),
+
+              // Submit Button
               ElevatedButton(
-                onPressed: createOrder,
-                child: Text("Submit Order"),
+                onPressed: _submitOrder,
+                child: Text("Create Order"),
               ),
             ],
           ),
